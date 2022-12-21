@@ -14,6 +14,9 @@ class GeolocationFunctionalityScreen extends StatefulWidget {
 
 class _GeolocationFunctionalityScreenState
     extends State<GeolocationFunctionalityScreen> {
+  double longitude = 0.0;
+  double latitude = 0.0;
+
   // Function for Getting Latitude and Longitude using Geo locator Plugin
   void getCurrentPosition() async {
     //Permission
@@ -30,6 +33,10 @@ class _GeolocationFunctionalityScreenState
       //Get Current Position with Location Accuracy from best to low
       Position currentPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
+      setState(() {
+        longitude = currentPosition.longitude;
+        latitude = currentPosition.latitude;
+      });
       log("Longitude: ${currentPosition.longitude}");
       log("Latitude: ${currentPosition.latitude}");
     }
@@ -60,8 +67,24 @@ class _GeolocationFunctionalityScreenState
                 },
                 style: ElevatedButton.styleFrom(
                     fixedSize: Size(context.width * 0.8, 60)),
-                child: const Text("Please Find Longitude and Latitude"),
-              )
+                child: const Text(
+                  "Please Find Longitude and Latitude",
+                  style: buttonTextStyle,
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Latitude is: ${latitude.toString()}",
+                textAlign: TextAlign.center,
+                style: customTextStyle,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text("Longitude is: ${longitude.toString()}",
+                  textAlign: TextAlign.center, style: customTextStyle),
             ],
           ),
         ),
@@ -69,3 +92,8 @@ class _GeolocationFunctionalityScreenState
     );
   }
 }
+
+const TextStyle customTextStyle =
+    TextStyle(fontSize: 18, fontWeight: FontWeight.w500);
+const TextStyle buttonTextStyle =
+    TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.white);
