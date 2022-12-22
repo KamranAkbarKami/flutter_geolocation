@@ -2,6 +2,10 @@
 
 A Flutter Project that Helps Understand Geolocator Plugin. It helps find Latitude and Longitude of
 User.
+#Plugins
+step 1 : add 2 packages in you project
+1.geolocator -> For getting user latitude and longitude
+2.geocoding -> For converting user latitude and longitude to address
 
 #Android Settings:
 

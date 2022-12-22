@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class _GeolocationFunctionalityScreenState
     extends State<GeolocationFunctionalityScreen> {
   double longitude = 0.0;
   double latitude = 0.0;
+  String address = "Your Address";
 
   // Function for Getting Latitude and Longitude using Geo locator Plugin
   void getCurrentPosition() async {
@@ -39,6 +41,20 @@ class _GeolocationFunctionalityScreenState
       });
       log("Longitude: ${currentPosition.longitude}");
       log("Latitude: ${currentPosition.latitude}");
+      getAddress(lat: latitude, long: longitude);
+    }
+  }
+
+  //For convert lat long to address
+  getAddress({required double lat, required double long}) async {
+    List<Placemark> placeMark = await placemarkFromCoordinates(lat, long);
+    setState(() {
+      address =
+          "${placeMark[0].postalCode} ${placeMark[0].subLocality!} ${placeMark[0].country!}";
+    });
+
+    for (int i = 0; i < placeMark.length; i++) {
+      log("INDEX $i ${placeMark[i]}");
     }
   }
 
@@ -84,6 +100,11 @@ class _GeolocationFunctionalityScreenState
                 height: 20,
               ),
               Text("Longitude is: ${longitude.toString()}",
+                  textAlign: TextAlign.center, style: customTextStyle),
+              const SizedBox(
+                height: 20,
+              ),
+              Text("Address is: ${address.toString()}",
                   textAlign: TextAlign.center, style: customTextStyle),
             ],
           ),
